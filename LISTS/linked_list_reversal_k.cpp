@@ -12,6 +12,7 @@ typedef struct node* nodeptr;
 
 void display(nodeptr head)
 {
+	cout << "HEAD -> ";
 	while(head)
 	{
 		cout << head->data << " -> ";
@@ -26,7 +27,7 @@ nodeptr reverse_k(nodeptr head, int k)
 
 	nodeptr org_head = head;
 	nodeptr new_head = NULL;
-	nodeptr new_tail = NULL;
+	//nodeptr new_tail = NULL;
 	int count = k;
 	while(head && count)
 	{
@@ -34,15 +35,11 @@ nodeptr reverse_k(nodeptr head, int k)
 		head->next = new_head;
 		new_head = head;
 		head = tmp;
-		new_tail = tmp;
+		//new_tail = tmp;
 		--count;
 	}
 
-	cout << "org_head  ==> "; display(org_head);
-	cout << "new_head  ==> "; display(new_head);
-	cout << "new_tail  ==> "; display(new_tail);
-
-	nodeptr new_tail_rev = reverse_k(new_tail, k);
+	nodeptr new_tail_rev = reverse_k(head, k);
 
 	org_head->next = new_tail_rev;
 
@@ -62,11 +59,31 @@ int main()
 	node node2 = {2,&node3};
 	node node1 = {1,&node2};
 
-	cout << "inp_head  ==> "; display(&node1);
+	nodeptr rev = &node1;
 
-	nodeptr rev = reverse_k(&node1, 3);
-
-	cout << "out_head  ==> "; display(rev);
+	display(rev);
+	rev = reverse_k(rev, 1);
+	display(rev);
+	rev = reverse_k(rev, 2);
+	display(rev);
+	rev = reverse_k(rev, 3);
+	display(rev);
+	rev = reverse_k(rev, 4);
+	display(rev);
+	rev = reverse_k(rev, 5);
+	display(rev);
+	rev = reverse_k(rev, 6);
+	display(rev);
+	rev = reverse_k(rev, 7);
+	display(rev);
+	rev = reverse_k(rev, 8);
+	display(rev);
+	rev = reverse_k(rev, 9);
+	display(rev);
+	rev = reverse_k(rev, 10);
+	display(rev);
+	rev = reverse_k(rev, 11);
+	display(rev);
 
 	return 0;
 }
