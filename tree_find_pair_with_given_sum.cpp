@@ -1,7 +1,6 @@
 /* http://www.geeksforgeeks.org/find-a-pair-with-given-sum-in-bst/ */
 
 #include <iostream>
-#include <queue>
 #include <stack>
 
 using namespace std;
@@ -15,82 +14,54 @@ struct node
 
 typedef struct node* nodeptr;
 
-void push_tree_into_queue(nodeptr root, queue<nodeptr>* myqueue, bool reverse)
+void push_tree_into_stack(nodeptr root, stack<nodeptr>* mystack, bool reverse)
 {
 	if(!root) return;
 
-	stack<nodeptr> mystack;
-
-	while()
+	if(root)
 	{
-		if(root)
-		{
-			mystack.push(root);
-			root = root->left;
-		}
-		else
-		{
-			if(mystack.empty())
-			{
-				flag = true;
-			}
-			else
-			{
-				root = mystack.front();
-				mystack.pop();
-				flag = true;
-			}
-		}
+		mystack->push(root);
+		if(!reverse) push_tree_into_stack(root->left, mystack, reverse);
+		push_tree_into_stack(root->right, mystack, reverse);
+		if(reverse) push_tree_into_stack(root->left, mystack, reverse);
 	}
-/*
-	mystack.push(root);
+}
+
+void print_stack(stack<nodeptr> mystack)
+{
+	cout << "TOP -> ";
 	while(!mystack.empty())
 	{
-		nodeptr top = mystack.top();
+		cout << mystack.top()->data << " -> ";
 		mystack.pop();
-		myqueue->push(top);
-		if(!reverse) if(top->right) mystack.push(top->right);
-		if(top->left)  mystack.push(top->left);
-		if(reverse) if(top->right) mystack.push(top->right);
 	}
-*/
+	cout << "END" << endl;
 }
 
-void print_queue(queue<nodeptr> myqueue)
+void find_pair(nodeptr root, int k)
 {
-	cout << "FRONT -> ";
-	while(!myqueue.empty())
-	{
-		cout << myqueue.front()->data << " -> ";
-		myqueue.pop();
-	}
-	cout << "BACK" << endl;
-}
+	stack<nodeptr> s1;
+	push_tree_into_stack(root, &s1, false);
+	cout << "s1 size :: " << s1.size() << endl;
+	print_stack(s1);
 
-void find_pair(nodeptr root)
-{
-	queue<nodeptr> q1;
-	push_tree_into_queue(root, &q1, false);
-	cout << "q1 size :: " << q1.size() << endl;
-	print_queue(q1);
-
-	queue<nodeptr> q2;
-	push_tree_into_queue(root, &q2, true);
-	cout << "q2 size :: " << q2.size() << endl;
-	print_queue(q2);
+	stack<nodeptr> s2;
+	push_tree_into_stack(root, &s2, true);
+	cout << "s2 size :: " << s2.size() << endl;
+	print_stack(s2);
 }
 
 int main()
 {
 	node rt_r_r = {7,NULL,NULL};
-	node rt_r_l = {6,NULL,NULL};
-	node rt_r   = {5,&rt_r_l,&rt_r_r};
-	node rt_l_r = {4,NULL,NULL};
-	node rt_l_l = {3,NULL,NULL};
+	node rt_r_l = {5,NULL,NULL};
+	node rt_r   = {6,&rt_r_l,&rt_r_r};
+	node rt_l_r = {3,NULL,NULL};
+	node rt_l_l = {1,NULL,NULL};
 	node rt_l   = {2,&rt_l_l,&rt_l_r};
-	node rt     = {1,&rt_l,&rt_r};
+	node rt     = {4,&rt_l,&rt_r};
 
-	find_pair(&rt);
+	find_pair(&rt, 10);
 
 	return 0;
 }

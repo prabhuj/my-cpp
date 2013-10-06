@@ -13,7 +13,7 @@ void reverse(char s[])
 	}
 }
 
-void itoa(int n, char s[])
+void itoa(int n, char s[], int base)
 {
 	int i = 0, sign;
 	if ((sign = n) < 0)
@@ -34,7 +34,6 @@ void itoa(int n, char s[])
 
 int main()
 {
-	char s[10];
-	itoa(-12340,s);
-	cout << s << endl;
+	{ char s[10]; itoa( 12340,s,10); cout << s << endl; }
+	{ char s[10]; itoa(-12340,s,10); cout << s << endl; }
 }

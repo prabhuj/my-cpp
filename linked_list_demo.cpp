@@ -2,165 +2,112 @@
 
 using namespace std;
 
-typedef struct node
+struct node
 {
 	int data;
-	node* next;
-}node;
-
-class LinkedList
-{
-	public:
-		node* head;
-		int length;
-
-		LinkedList():head(NULL),length(0){}
-		~LinkedList();
-		void add_start(int x);
-		void add_end(int x);
-		void print();
-		node* reverse();
-		int size();
-		void add(LinkedList& list);
+	struct node* next;
 };
 
-LinkedList::~LinkedList()
+typedef struct node node;
+typedef struct node* node_ptr;
+typedef struct node** node_ptr_ref;
+
+void print_list(node_ptr head)
 {
-	while(head != NULL)
+	cout << "HEAD";
+	while(head)
 	{
-		node* tmp = head;
+		cout << " -> " << head->data;
 		head = head->next;
-		delete tmp;
 	}
+	cout << " -> NULL" << endl;
 }
 
-void LinkedList::add_start(int x)
+node_ptr get_new_node(int data)
 {
-	if(head == NULL)
+	node_ptr new_node = new node;
+	new_node->data = data;
+	new_node->next = NULL;
+	return new_node;
+}
+
+void reverse_list(node_ptr_ref head_ref)
+{
+	node_ptr new_head = NULL;
+	node_ptr head = (*head_ref);
+	while(head)
 	{
-		head = new node();
-		head->data = x;
-		head->next = NULL;
-	}
-	else
-	{
-		node* tmp = new node();
-		tmp->data = x;
-		tmp->next = head;
+		node_ptr tmp = head->next;
+		head->next = new_head;
+		new_head = head;
 		head = tmp;
 	}
-	++length;
+	(*head_ref) = new_head;
 }
 
-void LinkedList::add_end(int x)
+void delete_list(node_ptr_ref head_ref)
 {
-	if(head == NULL)
+	node_ptr tmp1 = (*head_ref);
+	while(tmp1)
 	{
-		head = new node();
-		head->data = x;
-		head->next = NULL;
+		node_ptr tmp2 = tmp1->next;
+		delete tmp1;
+		tmp1 = tmp2;
 	}
-	else
-	{
-		node* tmp = head;
-		while(tmp->next != NULL)
-		{
-			tmp = tmp->next;
-		}
-		node* nw = new node();
-		nw->data = x;
-		nw->next = tmp->next;
-		tmp->next = nw;
-	}
-	++length;
+	(*head_ref) = NULL;
 }
 
-void LinkedList::print()
+void append_to_list(node_ptr_ref head_ref, int data)
 {
-	node* tmp = head;
-	while(tmp != NULL)
+	if((*head_ref) == NULL)
 	{
-		//cout << " -> " << tmp->data;
-		cout << tmp->data;
-		tmp = tmp->next;
+		(*head_ref) = get_new_node(data);
+		return;
 	}
-	cout << endl;
+
+	node_ptr head_tmp = (*head_ref);
+	while(head_tmp->next)
+	{
+		head_tmp = head_tmp->next;
+	}
+
+	head_tmp->next = get_new_node(data);
 }
 
-node* LinkedList::reverse()
+unsigned int length(node_ptr head)
 {
-	node* tmp = NULL;
-	while(head != NULL)
+	int length = 0;
+	while(head)
 	{
-		node* next = head->next;
-		head->next = tmp;
-		tmp = head;
-		head = next;
+		++length;
+		head = head->next;
 	}
-	head = tmp;
-}
-
-int LinkedList::size()
-{
 	return length;
-}
-
-void LinkedList::add(LinkedList& list)
-{
-	reverse();
-	list.reverse();
-
-	node* n1 = head;
-	node* n2 = list.head;
-	int x = 0;
-	while(n1 != NULL && n2 != NULL)
-	{
-		x = n1->data + n2->data + x;
-		n1->data = x%10;
-		x = x/10;
-		n1 = n1->next;
-		n2 = n2->next;
-	}
-	int y = x;
-	while(n1 != NULL && y > 0)
-	{
-		y = n1->data + y;
-		n1->data = y%10;
-		y = y/10;
-		n1 = n1->next;
-	}
-	while(n2 != NULL && y > 0)
-	{
-		y = n2->data + y;
-		add_end(y%10);
-		y = y/10;
-		n2 = n2->next;
-	}
-	if(y>0)
-	{
-		add_end(y);
-	}
-	reverse();
 }
 
 int main()
 {
-	LinkedList l1;
-	l1.add_start(9);
-	l1.add_start(9);
-	l1.add_start(9);
-	l1.add_start(9);
-	l1.add_start(9);
-	l1.add_start(9);
-	l1.print();
+	node_ptr list = NULL;
 
-	LinkedList l2;
-	l2.add_start(9);
-	l2.add_start(9);
-	l2.add_start(9);
-	l2.add_start(9);
-	l2.print();
+	print_list(list);
+	cout << length(list) << endl;
 
-	l1.add(l2);
-	l1.print();
+	append_to_list(&list,1);
+	append_to_list(&list,2);
+	append_to_list(&list,3);
+	append_to_list(&list,4);
+	append_to_list(&list,5);
+
+	print_list(list);
+	cout << length(list) << endl;
+
+	reverse_list(&list);
+
+	print_list(list);
+	cout << length(list) << endl;
+
+	delete_list(&list);
+
+	print_list(list);
+	cout << length(list) << endl;
 }

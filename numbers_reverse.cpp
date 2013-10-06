@@ -2,14 +2,19 @@
 
 using namespace std;
 
-void reverse_int(int x)
+void reverse_int(int num)
 {
-	cout << x << " ==> ";
+	cout << num << " ==> ";
 	long result = 0;
-	while(x)
+	while(num)
 	{
-		result = (result*10) + (x%10);
-		x = x/10;
+		result = (result*10) + (num%10);
+		if(result > INT_MAX || result < INT_MIN)
+		{
+			cout << "can not reverse" << endl;
+			return;
+		}
+		num = num/10;
 	}
 	cout << result << endl;
 }

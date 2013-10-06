@@ -4,10 +4,23 @@ using namespace std;
 
 char* encode(char* x)
 {
-	cout << strlen(x) << endl;
-	int i = 0, j = 0;
-	for(int j=0;j<strlen(x);j++)
+	if (!x)
+		return;
+	int i = 0;
+	char t = '\0';
+	int count = 0;
+	for(int i=0;i<strlen(x);i++)
 	{
+		if(x[i] == t)
+		{
+			count++;
+		}
+		else
+		{
+			cout << t << " :: " << count << endl;
+			t = x[i];
+			count = 0;
+		}
 	}
 	return x;
 }

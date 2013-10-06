@@ -27,7 +27,6 @@ nodeptr reverse_k(nodeptr head, int k)
 
 	nodeptr org_head = head;
 	nodeptr new_head = NULL;
-	//nodeptr new_tail = NULL;
 	int count = k;
 	while(head && count)
 	{
@@ -35,13 +34,10 @@ nodeptr reverse_k(nodeptr head, int k)
 		head->next = new_head;
 		new_head = head;
 		head = tmp;
-		//new_tail = tmp;
 		--count;
 	}
 
-	nodeptr new_tail_rev = reverse_k(head, k);
-
-	org_head->next = new_tail_rev;
+	org_head->next = reverse_k(head, k);
 
 	return new_head;
 }

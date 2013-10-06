@@ -47,14 +47,24 @@ void reverse_list(node_ptr_ref head_ref)
 
 void delete_list(node_ptr_ref head_ref)
 {
+	while((*head_ref))
+	{
+		node_ptr tmp = (*head_ref);
+		(*head_ref) = (*head_ref)->next;
+		delete tmp;
+	}
+/*
 	node_ptr tmp1 = (*head_ref);
 	while(tmp1)
 	{
+		print_list(tmp1);
 		node_ptr tmp2 = tmp1->next;
+		tmp2->next = NULL;
 		delete tmp1;
 		tmp1 = tmp2;
 	}
 	(*head_ref) = NULL;
+*/
 }
 
 void append_to_list(node_ptr_ref head_ref, int data)
@@ -74,68 +84,43 @@ void append_to_list(node_ptr_ref head_ref, int data)
 	head_tmp->next = get_new_node(data);
 }
 
-node_ptr merge_list(node_ptr h1, node_ptr h2)
+unsigned int length(node_ptr head)
 {
+	int length = 0;
+	while(head)
+	{
+		++length;
+		head = head->next;
+	}
+	return length;
 }
 
-void split_list(node_ptr head, node_ptr_ref h1, node_ptr_ref h2)
+void find_merge_pont(node_ptr head1, node_ptr head2)
 {
-	if(!head || !head->next)
-	{
-		(*h1) = head;
-		(*h2) = NULL;
-	}
+	int len1 = length(head1);
+	int len2 = length(head2);
 
-	node_ptr slow_ptr = head;
-	node_ptr fast_ptr = head;
-
-	while(fast_ptr && fast_ptr->next)
-	{
-		fast_ptr = fast_ptr->next->next;
-		slow_ptr = slow_ptr->next;
-	}
-
-	(*h1) = head;
-	(*h2) = slow_ptr->next;
-	slow_ptr->next = NULL;
-}
-
-void merge_sort_list(node_ptr_ref head_ref)
-{
-	node_ptr head = (*head_ref);
-
-	if(!head || !head->next)
-		return;
-
-	node_ptr first_half = NULL;
-	node_ptr second_half = NULL;
-
-	split_list(head, &first_half, &second_half);
-
-	print_list(first_half);
-	print_list(second_half);
+	int len = len2
 }
 
 int main()
 {
-	node_ptr list = NULL;
+	node c1 = {31,NULL};
+	node c2 = {32,&c1};
 
-	append_to_list(&list,10);
-	append_to_list(&list,9);
-	append_to_list(&list,8);
-	append_to_list(&list,7);
-	append_to_list(&list,6);
-	append_to_list(&list,5);
-	append_to_list(&list,4);
-	append_to_list(&list,3);
-	append_to_list(&list,2);
-	append_to_list(&list,1);
+	node a1 = {11,&c2};
+	node a2 = {12,&a1};
+	node a3 = {13,&a2};
 
-	print_list(list);
+	node b1 = {21,&c2};
+	node b2 = {22,&b1};
+	node b3 = {23,&b2};
 
-	merge_sort_list(&list);
+	node_ptr list1 = &a3;
+	node_ptr list2 = &b3;
 
-	print_list(list);
+	print_list(list1);
+	print_list(list2);
 
-	delete_list(&list);
+	find_merge_pont(list1, list2);
 }
